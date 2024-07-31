@@ -1,0 +1,50 @@
+version: "3.9"
+
+x-labels: &build-labels
+  labels:
+    com.hometap.build_url: $CI_JOB_URL
+    com.hometap.commit: $CI_COMMIT_SHORT_SHA
+    com.hometap.repository: $CI_REPOSITORY_URL
+    com.hometap.build_user: $GITLAB_USER_LOGIN
+
+x-platforms: &buildx-bake-platforms
+  platforms:
+    - linux/amd64
+    - linux/arm64
+
+services:
+  nothing:
+    build:
+      <<: *build-labels
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+      context: .
+      tags:
+        - &commit-tag ${CI_REGISTRY_IMAGE}:dev-$NOTHING_VERSION_TAG
+        - ${CI_REGISTRY_IMAGE}:dev-$NOTHING_BRANCH_TAG
+      target: dev
+      x-bake:
+        <<: *buildx-bake-platforms
+
+        cache-from:
+          - type=registry,ref=${CI_REGISTRY_IMAGE}/cache:dev-$NOTHING_BRANCH_TAG
+          - type=registry,ref=python:${PYTHON_IMAGE_VERSION:-3}-slim
+
+        cache-to: type=registry,ref=${CI_REGISTRY_IMAGE}/cache:dev-$NOTHING_BRANCH_TAG
+
+    entrypoint: []
+    # by default, launch a container that does nothing
+    command: ["sh","-c","sleep infinity"]
+    environment:
+      - POETRY_PYPI_TOKEN_PYPI
+      - SSH_AUTH_SOCK=/run/host-services/ssh-auth.sock
+
+    image: *commit-tag
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/app/
+      - ~/.gitconfig:/etc/gitconfig
+      - ~/.ssh/known_hosts:/home/app/.ssh/known_hosts
+      - ${SSH_AGENT_AUTH_SOCK:-/run/host-services/ssh-auth.sock}:/run/host-services/ssh-auth.sock

@@ -1,0 +1,31 @@
+{
+  "template": "git@gitlab.com:hometap/tools/poetry-cookiecutter",
+  "commit": "b5be7be91faa84c181ba11db7f29a4a352b953df",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "package_name": "Nothing",
+      "package_description": "Does nothing",
+      "package_url": "https://github.com/AndrewDeAsevedo/Nothing",
+      "author_name": "Andrew De Asevedo",
+      "author_email": "andrewdeasevedo11@gmail.com",
+      "python_version": "3.9",
+      "with_commitizen": "0",
+      "with_fastapi_api": "0",
+      "with_jupyter_lab": "0",
+      "with_pydantic_typing": "0",
+      "with_sentry_logging": "0",
+      "with_streamlit_app": "0",
+      "with_typer_cli": "0",
+      "with_typeguard": "0",
+      "continuous_integration": "GitHub",
+      "docstring_style": "Google",
+      "private_package_repository_name": "",
+      "private_package_repository_url": "",
+      "__package_name_kebab_case": "nothing",
+      "__package_name_snake_case": "nothing",
+      "_template": "git@gitlab.com:hometap/tools/poetry-cookiecutter"
+    }
+  },
+  "directory": null
+}
